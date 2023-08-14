@@ -57,3 +57,37 @@ function updateFields(select, paperNumber) {
         document.getElementById('customSheets' + paperNumber).style.display = 'block';
     }
 }
+
+function calculate() {
+    var results = [];
+    for (var i = 1; i <= paperCount; i++) {
+        var paperType = document.getElementById('paperType' + i).value;
+        var totalCost = parseFloat(document.getElementById('totalCost' + i).value);
+        var width = parseFloat(document.getElementById('width' + i).value) / 100; // Convert cm to meters
+        var length = parseFloat(document.getElementById('length' + i).value);
+        var sheets = parseFloat(document.getElementById('sheets' + i).value);
+        var reams = parseFloat(document.getElementById('reams' + i).value);
+        var rolls = parseFloat(document.getElementById('rolls' + i).value);
+        var customSheets = parseFloat(document.getElementById('customSheets' + i).value);
+        var size = parseFloat(document.getElementById('size' + i).value);
+
+        var costPerSheet;
+
+        if (paperType === 'ream') {
+            costPerSheet = totalCost / (sheets * reams);
+        } else if (paperType === 'roll') {
+            costPerSheet = totalCost / (width * length * rolls * 10000); // Assuming total cost is for entire roll
+        } else if (paperType === 'single_sheet') {
+            costPerSheet = totalCost / customSheets;
+        } else if (paperType === 'custom_size_sheets') {
+            costPerSheet = totalCost / customSheets;
+        }
+
+        costPerSheet = costPerSheet.toFixed(2); // Round to two decimal places
+        var brand = document.getElementById('brand' + i).value;
+        var line = document.getElementById('line' + i).value;
+        results.push(`Paper ${i} (${brand} - ${line}): ${costPerSheet} AUD per sheet`);
+    }
+
+    document.getElementById('results').innerHTML = results.join('<br>');
+}
