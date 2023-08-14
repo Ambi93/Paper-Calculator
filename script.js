@@ -59,6 +59,7 @@ function updateFields(select, paperNumber) {
 }
 
 function calculate() {
+    console.log("Calculate function called");
     var results = [];
     for (var i = 1; i <= paperCount; i++) {
         var paperType = document.getElementById('paperType' + i).value;
